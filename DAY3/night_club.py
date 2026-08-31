@@ -1,6 +1,27 @@
-def night_club():
-    guest_list = ["Guido","Esha", "Rajan", "Kishori"]
+def nightclub():
     
+    list1=["Guido", "Esha", "Rajan", "Kishori"]
     while True:
-        name = input("Enter the guest's name : ")
+        
+        guest=input("Enter user name: ")
+        
+        if guest=="exit":
+            break
+        
+        if guest in list1:
+            list1.remove(guest)
+            
+            list1.insert(0,guest)
+            
+            print(f"{guest} is moved to the first ")
+            
+            print(list1)
+        
+        
+        else:
+            print("Access denied. Not on the VIP list")
+        
+        
+        
     
+nightclub()
