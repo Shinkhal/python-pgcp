@@ -50,10 +50,11 @@ def enroll_students():
             print("Name and course cannot be empty")
             return
         marks = float(input("Enter marks : "))
-        if marks not in range(0,100+1):
-            print("Makrs should be in range 0 - 100")
+        if marks < 0 or marks > 100:
+            print("Marks should be in range 0 - 100")
             return
         student_id = id_counter + 1
+        id_counter += 1
         student_grade = grade_cal(marks)
         
         students.append(dict(id=student_id,name=name,course=course,marks=marks,grade=student_grade))
@@ -72,8 +73,13 @@ def list_students():
     else:
         print_all_students(students)
         
-def print_one_student():
-    pass
+def print_one_student(s):
+    id,name,course,marks,grade = s.values()
+    print('_'*75)
+    print(f'{'ID':<5}{"Candidate Name":<20}{"Course/Module":<20}{"Marks(100)":<15}{"Awarded Grade":<10}')
+    print('_'*75)
+    print(f'{id:<5}{name:<20}{course:<20}{marks:<15}{grade:<10}')
+    print('_'*75)
 
 def print_all_students(student_list):
     print('_'*75)
@@ -97,9 +103,11 @@ def main():
             case 2:
                 list_students()
             case 3:
-                pass
+                search_records()
             case 4:
                 pass
+            case 5:
+                purge_records()
             case 6:
                 save_to_json()
             case 7:
@@ -122,14 +130,87 @@ def save_to_json():
 def load_from_json():
     global filename
     global students
+    global id_counter
     try:
         with open(filename, mode="r") as file:
             students = json.load(file)
+            
+            id_counter = len(students)
             print("Students data loaded from database")
     except:
         print("Error Occured")
 
 
+def search_records():
+    try:
+        print("Enter 1 to search from ID, 2 for Name, 3 for Course")
+        choice = int(input("Enter choice : "))
+
+        if choice == 1:
+            pid = pid = int(input("Enter Student's ID : "))
+            search_by_id(pid)
+        elif choice == 2:
+            name = input("Enter Student's Name : ")
+            search_by_name(name)
+        elif choice == 3:
+            course = input("Enter Course Name : ")
+            search_by_course(course)
+        else:
+            print("Invalid Choice ... Try Again ")
+            return
+    except:
+        print("Error Occured")
+        
+def search_by_id(pid):
+    student = [ s for s in students if s["id"]==pid]
+    
+    if len(student)== 0:
+        print("No student found with this ID ...")
+    else:
+        print_one_student(student[0])
+    
+def search_by_name(name):
+    student = [ s for s in students if s["name"].lower()==name.lower()]
+    
+    if len(student)== 0:
+        print("No student found with this ID ...")
+    elif len(student) == 1:
+        print_one_student(student[0])
+    else:
+        print_all_students(student)
+    
+def search_by_course(course):
+    student = [ s for s in students if s["course"].lower()==course.lower()]
+    
+    if len(student)== 0:
+        print("No student found with this ID ...")
+    elif len(student) == 1:
+        print_one_student(student[0])
+    else:
+        print_all_students(student)
+
+def purge_records():
+    try:
+        pid = int(input("Enter the Student's ID to Purge : "))
+
+        student = [s for s in students if s["id"] == pid]
+
+        if len(student) == 0:
+            print("No student found with this ID...")
+            return
+
+        print_one_student(student[0])
+
+        confirmation = input("Are You Sure you want to purge this record..(Y/N) ")
+
+        if confirmation.strip().lower() == "y":
+            students.remove(student[0])
+            print("Record purged Successfully....")
+        else:
+            print("Purge cancelled.")
+
+    except ValueError:
+        print("Please enter a valid Student ID.")
 
 
 if __name__ == '__main__':
