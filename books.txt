@@ -1,0 +1,2 @@
+1|Python|Shinkhal|Coding|500.0|15            
+1|Java|Shinkhal|Coding|600.0|5

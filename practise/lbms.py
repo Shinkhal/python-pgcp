@@ -107,8 +107,9 @@ def add_book_entry(books, next_id):
     books.append(dict(id=next_id,title=title,author=author,genre=genre,price=price,copies=copies))
     print("Book Added Successfully ")
 
-def search_catalog():
+def search_catalog(books):
     pass
+    
 
 def main():
     global filename
@@ -124,6 +125,9 @@ def main():
                 add_book_entry(books,next_id)
             case 2:
                 render_catalog(books)
+            case 3:
+
+                search_catalog(books)
             case 6:
                 sync_catalog_to_file(filename,books)
             case 7:
