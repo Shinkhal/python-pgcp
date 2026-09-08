@@ -140,8 +140,8 @@ def main():
             case 2:
                 display_employees(employees)
             case 3:
-                
-                search_employee(employees)
+                pid = int(input("Enter Emp id to Search : "))
+                search_employee(employees,pid)
             case 6:
                 calculate_payroll(employees)
             case 7:
